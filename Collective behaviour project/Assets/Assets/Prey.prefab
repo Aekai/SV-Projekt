@@ -1387,6 +1387,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6682358178472589885}
   - component: {fileID: 3618222950720493383}
+  - component: {fileID: 7193726340057311754}
   m_Layer: 0
   m_Name: Prey
   m_TagString: Untagged
@@ -1431,6 +1432,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!136 &7193726340057311754
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7703363745839188014}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 1.75
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1 &7983968188591709673
 GameObject:
   m_ObjectHideFlags: 0
