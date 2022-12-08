@@ -7,56 +7,49 @@ public class PredatorScript : MonoBehaviour
 
     public float visionRadius = 30f;
     public float maxVelocity = 10f; 
-    public Transform[] allPreyRef = null;
-    List<Transform> globalMemory = new List<Transform>();
-    List<Transform> localMemory = new List<Transform>();
-    [SerializeField]
-    Rigidbody rb;
+    public PreyScript[] allPreyRef = null;
+    List<PreyScript> globalMemory = new List<PreyScript>();
+    List<PreyScript> localMemory = new List<PreyScript>();
     [SerializeField]
     Animator anim;
 
     private void moveTo(Transform prey) {
 
         this.transform.LookAt(prey.position);
-        float acceleration = 150f;
-        Vector3 direction = Vector3.forward;
-        direction.y = 0;
-        this.rb.AddRelativeForce(direction*acceleration * Time.deltaTime);
-        if (this.rb.velocity.magnitude > maxVelocity)
-            this.rb.velocity = this.rb.velocity.normalized * maxVelocity;
+        Vector3 direction = (prey.position-this.transform.position).normalized;
+        this.transform.position += direction * Time.deltaTime * maxVelocity;
     }
 
     // Update is called once per frame
     void Update()
     {
-        anim.SetFloat("velocity", this.rb.velocity.magnitude/maxVelocity);
+        anim.SetFloat("velocity", 1f);
         if (allPreyRef != null && allPreyRef.Length > 0 ){
-            foreach (Transform prey in allPreyRef) {
-                if ((prey.position - this.transform.position).magnitude <= visionRadius) {
-                    localMemory.Add(prey);
-                    if (!globalMemory.Contains(prey)) {
+            foreach (PreyScript prey in allPreyRef) {
+                if ((prey.transform.position - this.transform.position).magnitude <= visionRadius) {
+                    if (!localMemory.Contains(prey))
+                        localMemory.Add(prey);
+                    if (!globalMemory.Contains(prey))
                         globalMemory.Add(prey);
-                    }
                 }
                 else {
-                    if (globalMemory.Contains(prey)) {
-                        globalMemory.Remove(prey);
-                    }
+                    globalMemory.Remove(prey);
+                    localMemory.Remove(prey);
                 }
 
                 if (localMemory.Count < 2) {
                     globalMemory.Clear();
-                    Transform tmpClosestPrey = allPreyRef[0];
-                    foreach (Transform tmpPrey in allPreyRef) {
-                        if ((tmpClosestPrey.position - this.transform.position).magnitude > (tmpPrey.position - this.transform.position).magnitude)
+                    PreyScript tmpClosestPrey = allPreyRef[0];
+                    foreach (PreyScript tmpPrey in allPreyRef) {
+                        if ((tmpClosestPrey.transform.position - this.transform.position).magnitude > (tmpPrey.transform.position - this.transform.position).magnitude)
                             tmpClosestPrey = tmpPrey;
                     }
                     //move towards closest prey
-                    moveTo(tmpClosestPrey);
+                    moveTo(tmpClosestPrey.transform);
                 }
                 else {
                     if (globalMemory.Count > 0) {
-                        Transform tmpClosestPrey = localMemory[0];
+                        Transform tmpClosestPrey = localMemory[0].transform;
                         //move to closest prey
                         moveTo(tmpClosestPrey);
                     }
