@@ -5,12 +5,12 @@ using UnityEngine;
 public class MatchManager : MonoBehaviour
 {
 
-    public float floorRadius = 25f;
+    float floorRadius = 12.5f;
     public PredatorScript predator;
     public PreyScript[] allPrey;
     public GameObject foodPrefab;
     private List<GameObject> foodList = new List<GameObject>();
-    public int numFood = 5;
+    int numFood = 6;
     public GameObject foodParentObject;
 
     public void setRandomPositionInBounds(Transform transform) {

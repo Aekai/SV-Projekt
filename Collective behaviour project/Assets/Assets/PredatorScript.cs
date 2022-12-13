@@ -5,25 +5,43 @@ using UnityEngine;
 public class PredatorScript : MonoBehaviour
 {
 
-    public float visionRadius = 30f;
-    public float maxVelocity = 10f; 
+    float visionRadius = 5f;
+    float maxVelocity = 4f;
     public PreyScript[] allPreyRef = null;
     List<PreyScript> globalMemory = new List<PreyScript>();
     List<PreyScript> localMemory = new List<PreyScript>();
     [SerializeField]
     Animator anim;
+    Vector3 currentVelocity = Vector3.zero;
+    Transform currentTarget;
+
+    private void OnDrawGizmos() {
+        Gizmos.DrawWireSphere(this.transform.position, visionRadius);
+    }
+
+    private void Start() {
+        anim.SetFloat("velocity", 1f);
+    }
 
     private void moveTo(Transform prey) {
 
+        currentTarget = prey;
+        Vector3 targetPosition = prey.position;
+        targetPosition.y = this.transform.position.y;
         this.transform.LookAt(prey.position);
-        Vector3 direction = (prey.position-this.transform.position).normalized;
-        this.transform.position += direction * Time.deltaTime * maxVelocity;
+        this.transform.eulerAngles = new Vector3(0f, this.transform.eulerAngles.y, 0f);
+        // currentVelocity = (targetPosition-this.transform.position).normalized * maxVelocity;
+    }
+
+    private void FixedUpdate() {
+        currentVelocity = this.transform.forward * maxVelocity; // currentVelocity.normalized * Mathf.Clamp(currentVelocity.magnitude, 0f, maxVelocity);
+        this.transform.localPosition += currentVelocity * Time.fixedDeltaTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        anim.SetFloat("velocity", 1f);
+        // calculate which prey to move to
         if (allPreyRef != null && allPreyRef.Length > 0 ){
             foreach (PreyScript prey in allPreyRef) {
                 if ((prey.transform.position - this.transform.position).magnitude <= visionRadius) {

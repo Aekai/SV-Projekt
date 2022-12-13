@@ -9,20 +9,29 @@ public class PreyScript : Agent
 {
 
     public MatchManager matchManager;
-    public float maxVelocity = 4.86f*0.8f;
+    float maxVelocity = 4f*0.8f;
     Vector3 currentVelocity = Vector3.zero;
-    public float turnSpeed = 90f;
+    float turnSpeed = 120f;
     [SerializeField]
     Rigidbody rb;
     [SerializeField]
     Animator anim;
 
-    private void move(float forward, float turn) {
+    private void Start() {
+        anim.SetFloat("velocity", 0.8f);
+    }
+
+    private void move(float turn) {
         turn = Mathf.Clamp(turn, -1, 1);
         this.transform.Rotate(Vector3.up * turn * turnSpeed * Time.deltaTime);
+        currentVelocity = this.transform.forward * maxVelocity;
+    }
 
-        forward = Mathf.Clamp(forward, 0, 1)*maxVelocity;
-        currentVelocity = this.transform.forward * forward;
+    private void FixedUpdate() {
+        
+        currentVelocity = currentVelocity.magnitude * this.transform.forward;
+        currentVelocity = currentVelocity.normalized * Mathf.Clamp(currentVelocity.magnitude, 0f, maxVelocity);
+        this.transform.localPosition += currentVelocity * Time.fixedDeltaTime;
     }
 
     public override void OnEpisodeBegin()
@@ -47,7 +56,7 @@ public class PreyScript : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        move(actions.ContinuousActions[0], actions.ContinuousActions[1]);
+        move(actions.ContinuousActions[0]);
     }
 
     private void OnCollisionEnter(Collision other) {
@@ -74,12 +83,4 @@ public class PreyScript : Agent
             matchManager.setRandomPositionInBounds(other.transform);
         }
     }
-
-    private void Update() {
-        anim.SetFloat("velocity", currentVelocity.magnitude/maxVelocity);
-        currentVelocity = currentVelocity.magnitude * this.transform.forward;
-        currentVelocity = currentVelocity.normalized * Mathf.Clamp(currentVelocity.magnitude, 0f, maxVelocity);
-        this.transform.localPosition += currentVelocity * Time.deltaTime;
-    }
-
 }
