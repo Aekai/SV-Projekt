@@ -25,6 +25,8 @@ public class MatchManager : MonoBehaviour
         foreach (PreyScript prey in allPrey) {
             prey.gameObject.SetActive(true);
             setRandomPositionInBounds(prey.transform);
+            prey.allPrey = allPrey;
+            prey.predator = predator;
         }
 
         // initialize random positions for food
