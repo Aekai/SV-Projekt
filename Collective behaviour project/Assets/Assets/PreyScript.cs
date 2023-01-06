@@ -18,6 +18,8 @@ public class PreyScript : Agent
     Animator anim;
     [SerializeField]
     bool isGOM = false;
+    [SerializeField]
+    bool isFear = false;
 
     float ESpredator = 0.0f;
     float R = 5.0f;
@@ -32,10 +34,12 @@ public class PreyScript : Agent
 
     private void Start() {
         anim.SetFloat("velocity", 0.8f);
+        predator = matchManager.predator;
+        allPrey = matchManager.allPrey;
     }
 
     private void move(float turn) {
-        if (ESfinal > treshold)
+        if (isFear && ESfinal > treshold)
         {
             this.transform.LookAt(2 * this.transform.position - predator.transform.position);
             this.transform.eulerAngles = new Vector3(0f, this.transform.eulerAngles.y, 0f);
@@ -93,10 +97,10 @@ public class PreyScript : Agent
         sensor.AddObservation(currentVelocity.magnitude);
         sensor.AddObservation(this.transform.rotation);
         if (isGOM) {
-            sensor.AddObservation(matchManager.predator.transform.position);
-            sensor.AddObservation(matchManager.predator.maxVelocity);
-            sensor.AddObservation((matchManager.predator.transform.position - this.transform.position).magnitude);
-            sensor.AddObservation(matchManager.predator.transform.rotation);
+            sensor.AddObservation(predator.transform.position);
+            sensor.AddObservation(predator.maxVelocity);
+            sensor.AddObservation((predator.transform.position - this.transform.position).magnitude);
+            sensor.AddObservation(predator.transform.rotation);
         }
     }
 
