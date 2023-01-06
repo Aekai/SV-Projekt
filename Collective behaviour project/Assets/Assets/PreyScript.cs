@@ -99,7 +99,7 @@ public class PreyScript : Agent
         if (isGOM) {
             sensor.AddObservation(predator.transform.position);
             sensor.AddObservation(predator.maxVelocity);
-            sensor.AddObservation((predator.transform.position - this.transform.position).magnitude);
+            sensor.AddObservation(Vector3.Distance(predator.transform.position, this.transform.position));
             sensor.AddObservation(predator.transform.rotation);
         }
     }
