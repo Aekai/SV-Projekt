@@ -1559,7 +1559,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 1
-  m_BehaviorType: 0
+  m_BehaviorType: 2
   m_BehaviorName: Prey
   TeamId: 0
   m_UseChildSensors: 1
@@ -1585,6 +1585,8 @@ MonoBehaviour:
   rb: {fileID: -4285241579235139149}
   anim: {fileID: 3618222950720493383}
   isGOM: 0
+  predator: {fileID: 0}
+  allPrey: []
 --- !u!114 &7149301232837468338
 MonoBehaviour:
   m_ObjectHideFlags: 0

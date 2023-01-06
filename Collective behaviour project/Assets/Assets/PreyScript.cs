@@ -19,21 +19,66 @@ public class PreyScript : Agent
     [SerializeField]
     bool isGOM = false;
 
+    float ESpredator = 0.0f;
+    float R = 5.0f;
+    float Dpredator = 0.0f;
+    public PredatorScript predator = null;
+    float EScontagion = 0.0f;
+    public PreyScript[] allPrey = null;
+    float mp = 0.6f;
+    float mc = 0.4f;
+    float ESfinal = 0.0f;
+    float treshold = 0.5f;
+
     private void Start() {
         anim.SetFloat("velocity", 0.8f);
     }
 
     private void move(float turn) {
-        turn = Mathf.Clamp(turn, -1, 1);
-        this.transform.Rotate(Vector3.up * turn * turnSpeed * Time.deltaTime);
+        if (ESfinal > treshold)
+        {
+            this.transform.LookAt(2 * this.transform.position - predator.transform.position);
+            this.transform.eulerAngles = new Vector3(0f, this.transform.eulerAngles.y, 0f);
+        }
+        else
+        {
+            turn = Mathf.Clamp(turn, -1, 1);
+            this.transform.Rotate(Vector3.up * turn * turnSpeed * Time.deltaTime);
+        }
         currentVelocity = this.transform.forward * maxVelocity;
     }
 
     private void FixedUpdate() {
-        
+        CalculateESfinal();
         currentVelocity = currentVelocity.magnitude * this.transform.forward;
         currentVelocity = currentVelocity.normalized * Mathf.Clamp(currentVelocity.magnitude, 0f, maxVelocity);
         this.transform.localPosition += currentVelocity * Time.fixedDeltaTime;
+    }
+
+    private void CalculateESfinal()
+    {
+        Dpredator = Vector3.Distance(this.transform.position, predator.transform.position);
+        ESpredator = 1 - (Dpredator / R);
+        if (ESpredator < 0.0f)
+        {
+            ESpredator = 0.0f;
+        }
+
+        foreach (PreyScript prey in allPrey)
+        {
+            if (prey != this)
+            {
+                float distance = Vector3.Distance(this.transform.position, prey.transform.position);
+                if (distance < R)
+                {
+                    EScontagion += prey.ESpredator;
+                }
+            }
+        }
+
+        EScontagion = EScontagion / allPrey.Length;
+
+        ESfinal = mp * ESpredator + mc * EScontagion;
     }
 
     public override void OnEpisodeBegin()
