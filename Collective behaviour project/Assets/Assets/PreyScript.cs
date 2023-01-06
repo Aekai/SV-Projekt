@@ -16,6 +16,8 @@ public class PreyScript : Agent
     Rigidbody rb;
     [SerializeField]
     Animator anim;
+    [SerializeField]
+    bool isGOM = false;
 
     private void Start() {
         anim.SetFloat("velocity", 0.8f);
@@ -43,15 +45,20 @@ public class PreyScript : Agent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(this.transform.position);
-        sensor.AddObservation(currentVelocity);
+        sensor.AddObservation(currentVelocity.magnitude);
         sensor.AddObservation(this.transform.rotation);
+        if (isGOM) {
+            sensor.AddObservation(matchManager.predator.transform.position);
+            sensor.AddObservation(matchManager.predator.maxVelocity);
+            sensor.AddObservation((matchManager.predator.transform.position - this.transform.position).magnitude);
+            sensor.AddObservation(matchManager.predator.transform.rotation);
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
-        continuousActions[0] = Input.GetAxisRaw("Vertical");
-        continuousActions[1] = Input.GetAxisRaw("Horizontal");
+        continuousActions[0] = Input.GetAxisRaw("Horizontal");
     }
 
     public override void OnActionReceived(ActionBuffers actions)

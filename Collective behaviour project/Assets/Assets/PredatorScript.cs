@@ -6,7 +6,7 @@ public class PredatorScript : MonoBehaviour
 {
 
     float visionRadius = 5f;
-    float maxVelocity = 4f;
+    public float maxVelocity = 4f;
     public PreyScript[] allPreyRef = null;
     List<PreyScript> globalMemory = new List<PreyScript>();
     List<PreyScript> localMemory = new List<PreyScript>();
