@@ -16,7 +16,7 @@ public class PredatorScript : MonoBehaviour
     Transform currentTarget;
 
     private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(this.transform.position, visionRadius);
+        // Gizmos.DrawWireSphere(this.transform.position, visionRadius);
     }
 
     private void Start() {

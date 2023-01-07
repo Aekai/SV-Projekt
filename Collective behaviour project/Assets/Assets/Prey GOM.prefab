@@ -1557,7 +1557,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: fbd6e71519dcb924197cd7f569e44218, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: a16d4804d50efea4caa6a24ea2788325, type: 3}
   m_InferenceDevice: 1
   m_BehaviorType: 2
   m_BehaviorName: Prey
@@ -1585,9 +1585,10 @@ MonoBehaviour:
   rb: {fileID: -4285241579235139149}
   anim: {fileID: 3618222950720493383}
   isGOM: 1
-  isFear: 1
+  isFear: 0
   predator: {fileID: 0}
   allPrey: []
+  showTrajectory: 1
 --- !u!114 &7149301232837468338
 MonoBehaviour:
   m_ObjectHideFlags: 0

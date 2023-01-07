@@ -1588,6 +1588,7 @@ MonoBehaviour:
   isFear: 1
   predator: {fileID: 0}
   allPrey: []
+  showTrajectory: 1
 --- !u!114 &7149301232837468338
 MonoBehaviour:
   m_ObjectHideFlags: 0

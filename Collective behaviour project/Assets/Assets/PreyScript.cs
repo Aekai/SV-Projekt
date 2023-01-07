@@ -31,6 +31,8 @@ public class PreyScript : Agent
     float mc = 0.4f;
     float ESfinal = 0.0f;
     float treshold = 0.5f;
+    [SerializeField]
+    bool showTrajectory = true;
 
     private void Start() {
         anim.SetFloat("velocity", 0.8f);
@@ -53,6 +55,9 @@ public class PreyScript : Agent
     }
 
     private void FixedUpdate() {
+        if (showTrajectory) {
+            Debug.DrawLine(this.transform.position, this.transform.position+this.transform.forward, new Color(0.9f, 0.7f, 0.2f));
+        }
         CalculateESfinal();
         currentVelocity = currentVelocity.magnitude * this.transform.forward;
         currentVelocity = currentVelocity.normalized * Mathf.Clamp(currentVelocity.magnitude, 0f, maxVelocity);
