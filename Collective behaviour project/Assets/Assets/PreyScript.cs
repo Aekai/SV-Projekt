@@ -129,9 +129,8 @@ public class PreyScript : Agent
         else if (other.gameObject.CompareTag("Predator")) {
             // Give -1 point
             AddReward(-1f);
-            // maybe disable this game object or transfer this to new location?
-            // this.gameObject.SetActive(false);
-            // matchManager.setRandomPositionInBounds(this.transform);
+
+            matchManager.setRandomPositionInBounds(this.transform, MatchManager.TransformType.Prey);
             EndEpisode();
         }
     }
@@ -141,7 +140,7 @@ public class PreyScript : Agent
             // Give +0.5 points
             AddReward(0.5f);
             // Tell MatchManager to move food source
-            matchManager.setRandomPositionInBounds(other.transform);
+            matchManager.setRandomPositionInBounds(other.transform, MatchManager.TransformType.Food);
         }
     }
 }
